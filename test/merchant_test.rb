@@ -7,5 +7,9 @@ class MerchantTetst < Minitest::Test
 
   end
 
+  def test_merchant_has_id
+
+  end
+
 
 end
