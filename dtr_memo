@@ -1,0 +1,75 @@
+DTR Memo
+Project: Black Thursday
+Group Member Names: Charlie Kaminer, Nick Pisciotta
+
+What does each group member hope to get out of the project?
+  - Become more comfortable working with large data sets in a practical setting.  Focusing on higher
+    level applications and using that to assist in problem solving.
+
+What are your goals and expectations for the project?
+  - Complete functional expectations leaving enough time to build our own feature.
+  - Finish early enough to leave time for complete re-factoring.
+
+When are group members available to work together?
+  - 2-3 hours after school everyday and adjust as necessary
+  - Charlie wants to play golf over the weekend (Saturday)
+  - Nick moving on Saturday
+  - Game of Thrones (wrap up by Sunday at 7)
+  - 10 total weekend hours would be ideal
+
+What hours can each group member work individually?
+  - see above answer
+
+Are there any personal time commitments that need to be discussed?
+  -  see two answers above
+
+How will group members communicate?
+  - slack, screenhero, etc.
+
+How often will communication happen, and how will open lines of communication be maintained?
+  - Ideally, working together everyday
+  - As necessary, will try available (probably not during moving/golf)
+
+What is each group member’s self-identified strength(s) technically?
+  - Nick strong with enumerables and collections
+  - Charlie getting the solution started
+
+What does each group member want to improve on technically?
+  - Charlie really wants to work on TDD
+  - Nick wants to work on having objects communicate effectively
+  - both want to work on both things
+
+How can the team assist with these improvements?
+  - Try to always start with TDD and don't be afraid to stop the process to give reminders
+  - Thinking out loud, what and why things should be/need to be communicating
+  - Don't be afraid to break up work flow to achieve more clarity
+
+Which feature(s) does each group member want to work on?
+  - Define at a later date
+
+Which feature(s) does each group member not want to work on?
+  - Define at a later date
+
+What is the agreed upon Git workflow?
+  - each team member creates own project branch
+  - don't work on master branch
+  - try to effective in pull request comments
+  - Charlie will fork project and add Nick as collaborator
+
+What project management tool will be used?
+  - Waffle
+
+What is the agreed upon procedure for conducting code reviews before merging into master: who will review pull requests, and when?
+  - will review each others requests
+  - if there are any doubts about what's going on, talk to creator of request before merging
+
+What is expected of group members when they run into problems implementing a feature?
+  - Use your head, think about scope of issue
+
+How does each group member want feedback (both positive and constructive) to be delivered?
+  - Be up front, don't be afraid to speak what's on your mind
+
+Is there anything else the group should know about personal work/communication styles?
+  - Not particularly.  Learn as you go.
+
+Additional Notes:
