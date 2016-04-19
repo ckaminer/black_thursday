@@ -1,11 +1,12 @@
 require './test/test_helper'
 require './lib/merchant'
 
-class MerchantTetst < Minitest::Test
+class MerchantTest < Minitest::Test
 
-  def test_github_works
-
+  def test_merchant_has_id
   end
 
+  def test_merchant_has_name
+  end
 
 end

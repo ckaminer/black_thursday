@@ -1,0 +1,28 @@
+require './lib/test_helper'
+require '.lib/item_repository'
+
+
+class ItemRepositoryTest < Minitest::Test
+
+def test_all_method_returns_all_item_instances
+end 
+
+def test_find_by_id_method_returns_item_with_that_id
+end
+
+def test_find_by_name_method_returns_item_with_that_name
+end
+
+def test_find_by_description_method_returns_item_with_provided_description
+end
+
+def test_find_by_price_returns_items_with_that_same_price
+end
+
+def test_find_by_price_range_method_returns_items_in_that_price_range
+end
+
+def test_find_by_merchant_id_returns_items_with_that_merchant_id
+end
+
+end
