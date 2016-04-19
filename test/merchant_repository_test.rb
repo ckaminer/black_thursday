@@ -1,7 +1,14 @@
 require './test/test_helper'
-require './lib/merchant'
+require './lib/merchant_repository'
 
-class MerchantTest < Minitest::Test
+class MerchantRepositoryTest < Minitest::Test
+
+  def test_parse_data_populates_merchants_array
+    mr = MerchantRepository.new(File.join(Dir.pwd, "data/merchants.csv"))
+
+    mr.parse_data_by_row
+    assert_equal 475, mr.merchants.length
+  end
 
   def test_all_returns_array_of_all_merchant_instances
   end

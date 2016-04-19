@@ -1,0 +1,72 @@
+{
+  "Unit Tests": {
+    "coverage": {
+      "/Users/charleskaminer/Turing/1module/black_thursday/lib/merchant_repository.rb": [
+        1,
+        1,
+        1,
+        null,
+        1,
+        1,
+        null,
+        1,
+        1,
+        1,
+        null,
+        null,
+        1,
+        1,
+        475,
+        null,
+        null,
+        null,
+        1,
+        0,
+        null,
+        null,
+        1,
+        0,
+        0,
+        null,
+        null,
+        null,
+        1,
+        null,
+        null,
+        1,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "/Users/charleskaminer/Turing/1module/black_thursday/lib/merchant.rb": [
+        1,
+        null,
+        1,
+        null,
+        1,
+        475,
+        475,
+        475,
+        475,
+        null,
+        null,
+        null
+      ],
+      "/Users/charleskaminer/Turing/1module/black_thursday/lib/loader.rb": [
+        1,
+        null,
+        1,
+        null,
+        1,
+        1,
+        null,
+        null,
+        null
+      ]
+    },
+    "timestamp": 1461101954
+  }
+}
