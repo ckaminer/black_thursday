@@ -13,5 +13,27 @@ class Item
     @updated_at = row[:updated_at]
   end
 
+  def id
+  end
+
+  def name
+  end
+
+  def description
+  end
+
+  def unit_price
+  end
+
+  def created_at
+  end
+
+  def updated_at
+  end
+
+  def merchant_id
+  end
+
+
 
 end
