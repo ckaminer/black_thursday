@@ -17,23 +17,26 @@ class MerchantRepository
   end
 
   def all
+    parse_data_by_row
     @merchants
   end
 
   def find_by_id(id)
     @merchants.find do |merchant|
-      merchant.id == id
+      merchant.id == id.to_s
     end
   end
 
   def find_by_name(name)
     @merchants.find do |merchant|
       merchant.name.downcase == name.downcase
+    end
   end
 
   def find_all_by_name(name)
     @merchants.find_all do |merchant|
       merchant.name.downcase == name.downcase
+    end
   end
 
 end
