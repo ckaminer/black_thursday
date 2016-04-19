@@ -4,6 +4,7 @@ class MerchantRepository
 
   def initialize(data)
     @contents = CSV.open 'data', headers: true, header_converters: :symbol
+    # require 'pry';binding.pry
   end
 
   def all
