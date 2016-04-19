@@ -4,6 +4,9 @@ require '.lib/item_repository'
 
 class ItemRepositoryTest < Minitest::Test
 
+def test_all_method_returns_all_item_instances
+end 
+
 def test_find_by_id_method_returns_item_with_that_id
 end
 
