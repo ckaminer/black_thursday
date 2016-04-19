@@ -8,6 +8,10 @@ class MerchantRepository
   def initialize(file_path)
     @file_path = file_path
     @merchants = []
+
+  def initialize(data)
+    @contents = CSV.open 'data', headers: true, header_converters: :symbol
+    # require 'pry';binding.pry
   end
 
   def create_row_hash(data)
