@@ -1,13 +1,13 @@
 {
   "result": {
-<<<<<<< HEAD
+
     "covered_percent": 100.0
-=======
-<<<<<<< HEAD
+
     "covered_percent": 55.56
-=======
+
     "covered_percent": 98.11
->>>>>>> nick
->>>>>>> master
+
+    "covered_percent": 100.0
+
   }
 }

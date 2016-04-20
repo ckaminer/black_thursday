@@ -27,7 +27,7 @@ class ItemRepository
       item.id == id
     end
   end
-
+  
   def find_by_name(name)
     @items.find do |item|
       item.name == name
