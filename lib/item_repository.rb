@@ -27,7 +27,7 @@ class ItemRepository
       item.id == id
     end
   end
-
+  
   def find_by_name(name)
     @items.find do |item|
       item.name == name
@@ -43,7 +43,7 @@ class ItemRepository
 
   def find_all_by_price(price)
     @items.find do |item|
-      item.unit_price == price
+      item.unit_price_to_dollars == price
     end
   end
 
@@ -52,7 +52,7 @@ class ItemRepository
     high = BigDecimal.new(high_range, 4)
     range = (low..high)
     @items.find_all do |item|
-      range === item.unit_price
+      range === item.unit_price_to_dollars
     end
   end
 
