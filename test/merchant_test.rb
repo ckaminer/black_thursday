@@ -15,4 +15,16 @@ class MerchantTest < Minitest::Test
     assert_equal "Turing School", m.name
   end
 
+  def test_created_at_defaults_to_today
+    m = Merchant.new({:id => 5, :name => "Turing School"})
+
+    assert_equal "2016-04-19", m.created_at
+  end
+
+  def test_created_at_returns_value_if_entered
+    m = Merchant.new({:id => 5, :name => "Turing School", :created_at => "2016-01-01"})
+
+    assert_equal "2016-01-01", m.created_at
+  end
+
 end
