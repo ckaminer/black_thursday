@@ -9,7 +9,8 @@ class SalesEngineTest < Minitest::Test
                           :merchants => "./data/merchants.csv",
                             })
 
-    assert_equal 9, se.items
+    assert_equal ItemRepository, se.items.class
+    assert_equal MerchantRepository, se.merchants.class
   end
 
 end
