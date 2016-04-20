@@ -1,11 +1,244 @@
 {
   "Unit Tests": {
     "coverage": {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+      "/Users/charleskaminer/Turing/1module/black_thursday/lib/sales_engine.rb": [
+        1,
+        1,
+        1,
+        null,
+        1,
+        null,
+        1,
+        null,
+        1,
+        0,
+        0,
+        null,
+        null,
+        null
+      ],
+      "/Users/charleskaminer/Turing/1module/black_thursday/lib/merchant_repository.rb": [
+        1,
+        1,
+        1,
+        null,
+        1,
+        1,
+        null,
+        1,
+        0,
+        0,
+        null,
+        null,
+        1,
+        0,
+        0,
+=======
+      "/Users/nickpisciotta/turing/Module1/Projects/black_thursday/lib/item_repository.rb": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        null,
+        1,
+        1,
+        null,
+        1,
+        7,
+        7,
+        null,
+        null,
+        1,
+        7,
+        9569,
+        null,
+        null,
+        null,
+        1,
+        0,
+        null,
+        null,
+        1,
+        1,
+        1,
+>>>>>>> nick
+        null,
+        null,
+        null,
+        1,
+<<<<<<< HEAD
+        0,
+        0,
+        null,
+        null,
+        1,
+        0,
+        0,
+=======
+        1,
+        1,
+>>>>>>> nick
+        null,
+        null,
+        null,
+        1,
+<<<<<<< HEAD
+        0,
+        0,
+=======
+        1,
+        1367,
+        1367,
+>>>>>>> nick
+        null,
+        null,
+        null,
+        1,
+<<<<<<< HEAD
+        0,
+        0,
+        null,
+        null,
+        null,
+        null
+      ],
+      "/Users/charleskaminer/Turing/1module/black_thursday/lib/merchant.rb": [
+        1,
+        null,
+        1,
+        null,
+        1,
+        0,
+        0,
+        0,
+        0,
+        null,
+        null,
+        null
+      ],
+      "/Users/charleskaminer/Turing/1module/black_thursday/lib/loader.rb": [
+        1,
+        null,
+        1,
+        null,
+        1,
+        0,
+=======
+        1,
+        1,
+        null,
+        null,
+        null,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1367,
+        null,
+        null,
+        null,
+        1,
+        1,
+        1,
+        null,
+>>>>>>> nick
+        null,
+        null,
+        null
+      ],
+<<<<<<< HEAD
+      "/Users/charleskaminer/Turing/1module/black_thursday/lib/item_repository.rb": [
+=======
+>>>>>>> master
       "/Users/nickpisciotta/turing/Module1/Projects/black_thursday/lib/item.rb": [
+>>>>>>> nick
         1,
         1,
         null,
         1,
+<<<<<<< HEAD
+        1,
+        null,
+        1,
+        0,
+        0,
+        null,
+        null,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        null,
+        null,
+        null,
+        1,
+        null,
+        null,
+        1,
+        null,
+        null,
+        1,
+        null,
+        null,
+        1,
+        null,
+        null,
+        1,
+        null,
+        null,
+        1,
+        null,
+        null,
+        null
+      ],
+      "/Users/charleskaminer/Turing/1module/black_thursday/lib/item.rb": [
+        1,
+        null,
+        1,
+        null,
+        null,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        null,
+        null,
+        1,
+        null,
+        null,
+        1,
+        null,
+        null,
+        1,
+        null,
+        null,
+        1,
+        null,
+        null,
+        1,
+        null,
+        null,
+        1,
+        null,
+        null,
+        1,
+        null,
+        null,
+=======
         null,
         1,
         null,
@@ -23,12 +256,26 @@
         1,
         1,
         null,
+<<<<<<< HEAD
         null,
+=======
+        1,
+        7,
+>>>>>>> nick
+>>>>>>> master
         null,
         null,
         null
       ]
     },
+<<<<<<< HEAD
     "timestamp": 1461112630
+=======
+<<<<<<< HEAD
+    "timestamp": 1461108837
+=======
+    "timestamp": 1461108606
+>>>>>>> nick
+>>>>>>> master
   }
 }

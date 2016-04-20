@@ -20,6 +20,4 @@ class Item
     BigDecimal.new(@unit_price, 4)
   end
 
-
-
 end
