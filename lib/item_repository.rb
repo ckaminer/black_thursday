@@ -1,42 +1,65 @@
 require 'csv'
 require './lib/item'
+require './lib/loader'
+require 'bigdecimal'
+require 'bigdecimal/util'
 
 class ItemRepository
-  attr_reader :content
+  attr_reader :items, :file_path
 
-  def initialize(data)
-    @content = CSV.open data, headers: true, header_converters: :symbol
-    require 'pry'; binding.pry
+  def initialize(file_path)
+    @file_path = file_path
+    @items = []
   end
 
-  def all
-    @content.each do |row|
-      id = row[:id]
-      name = row[:name]
-      description = row[:description]
-      unit_price = row[:unit_price]
-      merchant_id = row[:merchant_id]
-      created_at = row[:created_at]
-      updated_at = row[:updated_at]
+  def parse_data_by_row
+    Loader.open_file(@file_path).each do |row|
+      @items << Item.new(row)
     end
   end
 
+  def all
+    @items
+  end
+
   def find_by_id(id)
+    @items.find do |item|
+      item.id == id
+    end
   end
 
   def find_by_name(name)
+    @items.find do |item|
+      item.name == name
+    end
   end
 
-  def find_all_with_description(description)
+  def find_all_with_description(searched_description)
+    @items.find_all do |item|
+      downcase_description = item.description.downcase
+      downcase_description.include?(searched_description.downcase)
+    end
   end
 
   def find_all_by_price(price)
+    @items.find do |item|
+      item.unit_price == price
+    end
   end
 
-  def find_all_by_price_in_range(range)
+  def find_all_by_price_in_range(low_range, high_range)
+    low = BigDecimal.new(low_range, 4)
+    high = BigDecimal.new(high_range, 4)
+    range = (low..high)
+    @items.find_all do |item|
+      range === item.unit_price
+    end
   end
 
   def find_all_by_merchant_id(merchant_id)
+    @items.find do |item|
+      item.merchant_id == merchant_id
+    end
   end
 
 end
