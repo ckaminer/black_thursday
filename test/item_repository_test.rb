@@ -42,7 +42,7 @@ class ItemRepositoryTest < Minitest::Test
 
     result = ir.find_all_with_description("Almost every social icon")
 
-    assert_equal 1 , result.length 
+    assert_equal 1 , result.length
   end
 
   def test_find_by_price_returns_items_with_that_same_price
@@ -52,7 +52,7 @@ class ItemRepositoryTest < Minitest::Test
 
     result = ir.find_all_by_price(1200)
 
-    assert_equal 1200, result.unit_price
+    assert_equal 1200, result.unit_price_to_dollars  
   end
 
   def test_find_by_price_range_method_returns_items_in_that_price_range
