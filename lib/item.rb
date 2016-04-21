@@ -24,15 +24,17 @@ class Item
   end
 
   def merchant
-    result = traverse_to_merchant_repository.merchants.find do |merchant|
-      merchant.id == "12334141"
+     traverse_to_merchant_repository.merchants.find do |merchant|
+      merchant.id == merchant_id
+
     end
-    # require 'pry';binding.pry
   end
 
-  def traverse_to_merchant_repository
-    self.item_repository.sales_engine.merchants
-  end
+  private
+
+    def traverse_to_merchant_repository
+      self.item_repository.sales_engine.merchants
+    end
 
 
 end
