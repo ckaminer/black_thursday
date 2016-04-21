@@ -40,7 +40,52 @@ class SalesAnalyst
   end
 
   def average_item_price_for_merchant(id)
+    merchant = sales_engine.merchants.find_by_id(id)
+    prices = merchant.price_of_items
+    (prices.reduce(:+) / prices.count).to_f
+  end
 
+  def average_average_item_price_for_all_merchants
+    averages = array_of_all_merchants.map do |merchant|
+      average_item_price_for_merchant(merchant.id)
+    end
+    (averages.reduce(:+) / averages.count).to_f
+  end
+
+  def golden_items
+    threshold = average_item_prices +
+                (average_price_per_item_standard_deviation * 2)
+    item_array_for_merchants.flatten.find_all do |item|
+      item.unit_price_to_dollars > threshold
+    end
+  end
+
+  def average_item_prices
+    average = prices_for_each_item.reduce(:+).to_f/prices_for_each_item.count
+    average.round(2)
+  end
+
+  def item_array_for_merchants
+    array_of_all_merchants.map do |merchant|
+      merchant.items
+    end
+  end
+
+  def prices_for_each_item
+    item_array_for_merchants.flatten.map do |item|
+      item.unit_price_to_dollars
+    end
+  end
+
+  def sum_of_price_squares
+    squares = prices_for_each_item.map do |price|
+      (price - average_item_prices) ** 2
+    end
+    squares.reduce(:+)
+  end
+
+  def average_price_per_item_standard_deviation
+    Math.sqrt(sum_of_price_squares/2)
   end
 
   private

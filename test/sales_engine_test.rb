@@ -20,7 +20,6 @@ class SalesEngineTest < Minitest::Test
                               })
     item = se.items.find_by_id("263395237")
     result = item.merchant
-    #require 'pry'; binding.pry
     assert_equal Merchant, result.class
     assert_equal "12334141", result.id
   end
@@ -31,10 +30,15 @@ class SalesEngineTest < Minitest::Test
                               :merchants => "./data/merchants.csv",
                               })
     merchant = se.merchants.find_by_id("12334141")
+
     result = merchant.items
-    #require 'pry'; binding.pry
+    result2 = merchant.price_of_items.map do |price|
+                price.to_f
+              end
+
     assert_equal Item, result[0].class
     assert_equal "263395237", result[0].id
+    assert_equal [1200], result2
   end
 
 end
