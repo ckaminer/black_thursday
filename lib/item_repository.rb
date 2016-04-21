@@ -14,6 +14,10 @@ class ItemRepository
     parse_data_by_row
   end
 
+  def inspect
+    "#<#{self.class} #{@items.size} rows>"
+  end
+
   def parse_data_by_row
     Loader.open_file(@file_path).each do |row|
       @items << Item.new(row, self)
