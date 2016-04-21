@@ -12,7 +12,7 @@ class SalesAnalystTest < Minitest::Test
 
     sa = SalesAnalyst.new(se)
 
-    result = sa.average_items_per_merchant
+    result = sa.average_item_count
 
     assert_equal 2.88, result
   end
@@ -80,16 +80,12 @@ class SalesAnalystTest < Minitest::Test
 
     sa = SalesAnalyst.new(se)
     items = sa.golden_items
-    assert_equal 4299.40, sa.average_item_prices
+    assert_equal 4299.40, sa.average_item_price
     assert_equal 8538.61, sa.average_price_per_item_standard_deviation.round(2)
-    #require 'pry'; binding.pry
     assert items.all? do |item|
-      item.unit_price_to_dollars > (2.82)
+      item.unit_price_to_dollars > (21376.62)
     end
     assert_equal [], items
   end
-
-
-
 
 end
