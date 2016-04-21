@@ -1,6 +1,6 @@
 require 'bigdecimal'
 require 'bigdecimal/util'
-require './lib/merchant_repository'
+require_relative 'merchant_repository'
 
 
 class Item

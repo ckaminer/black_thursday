@@ -1,8 +1,8 @@
 require 'csv'
-require './lib/item'
-require './lib/loader'
 require 'bigdecimal'
 require 'bigdecimal/util'
+require_relative 'item'
+require_relative 'loader'
 
 class ItemRepository
   attr_reader :items, :file_path, :sales_engine

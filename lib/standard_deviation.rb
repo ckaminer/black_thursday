@@ -1,4 +1,4 @@
-require './lib/average'
+require_relative 'average'
 
 class StandardDeviation
   attr_reader :array

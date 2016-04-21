@@ -1,6 +1,6 @@
-require './lib/sales_engine'
-require './lib/average'
-require './lib/standard_deviation'
+require_relative 'sales_engine'
+require_relative 'average'
+require_relative 'standard_deviation'
 
 class SalesAnalyst
 
