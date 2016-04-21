@@ -12,6 +12,10 @@ class MerchantRepository
     parse_data_by_row
   end
 
+  def inspect
+    "#<#{self.class} #{@merchants.size} rows>"
+  end
+
   # def check
   #   if @hash = nil
   #     contents = Loader.open_file(@file_path)
