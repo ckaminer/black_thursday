@@ -10,7 +10,7 @@ class ItemTest < Minitest::Test
   :unit_price  => BigDecimal.new(10.99,4),
   :created_at  => Time.now,
   :updated_at  => Time.now,
-  })
+  }, nil)
 
     assert_equal "Pencil", i.name
   end
@@ -23,7 +23,7 @@ class ItemTest < Minitest::Test
   :unit_price  => BigDecimal.new(10.99,4),
   :created_at  => Time.now,
   :updated_at  => Time.now,
-  })
+},nil)
 
     assert_equal "You can use it to write things", i.description
   end
@@ -35,7 +35,7 @@ class ItemTest < Minitest::Test
   :unit_price  => BigDecimal.new(10.99,4),
   :created_at  => Time.now,
   :updated_at  => Time.now,
-  })
+  },nil)
 
     assert_equal 10.99, i.unit_price
 
@@ -48,7 +48,7 @@ class ItemTest < Minitest::Test
   :unit_price  => 10.99,
   :created_at  => Time.now,
   :updated_at  => Time.now,
-  })
+  },nil)
 
     assert_equal 10.99, i.unit_price_to_dollars
 
@@ -61,7 +61,7 @@ class ItemTest < Minitest::Test
   :unit_price  => BigDecimal.new(10.99,4),
   :created_at  => Time.now,
   :updated_at  => Time.now,
-  })
+  },nil)
 
     assert Time.now, i.created_at
   end
@@ -73,7 +73,7 @@ class ItemTest < Minitest::Test
   :unit_price  => BigDecimal.new(10.99,4),
   :created_at  => "2015-10-10",
   :updated_at  => Time.now,
-  })
+  },nil)
 
     assert_equal "2015-10-10", i.created_at
   end
