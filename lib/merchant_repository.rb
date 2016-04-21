@@ -3,27 +3,29 @@ require './lib/merchant'
 require './lib/loader'
 
 class MerchantRepository
-  attr_reader :file_path, :merchants
+  attr_reader :file_path, :merchants, :sales_engine
 
-  def initialize(file_path)
+  def initialize(file_path, sales_engine)
     @file_path = file_path
     @merchants = []
+    @sales_engine = sales_engine
+    parse_data_by_row
   end
 
   def parse_data_by_row
     Loader.open_file(@file_path).each do |row|
-      @merchants << Merchant.new(row)
+      @merchants << Merchant.new(row, self)
     end
   end
 
   def all
-    parse_data_by_row
     @merchants
   end
 
   def find_by_id(id)
     @merchants.find do |merchant|
       merchant.id == id.to_s
+    # require 'pry';binding.pry
     end
   end
 

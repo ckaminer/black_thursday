@@ -5,16 +5,18 @@ require 'bigdecimal'
 require 'bigdecimal/util'
 
 class ItemRepository
-  attr_reader :items, :file_path
+  attr_reader :items, :file_path, :sales_engine
 
-  def initialize(file_path)
+  def initialize(file_path, sales_engine)
     @file_path = file_path
     @items = []
+    @sales_engine = sales_engine
+    parse_data_by_row
   end
 
   def parse_data_by_row
     Loader.open_file(@file_path).each do |row|
-      @items << Item.new(row)
+      @items << Item.new(row, self)
     end
   end
 
@@ -25,9 +27,10 @@ class ItemRepository
   def find_by_id(id)
     @items.find do |item|
       item.id == id
+      #require 'pry';binding.pry
     end
   end
-  
+
   def find_by_name(name)
     @items.find do |item|
       item.name == name
