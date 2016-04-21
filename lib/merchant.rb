@@ -16,6 +16,12 @@ class Merchant
     end
   end
 
+  def price_of_items
+    items.map do |item|
+      item.unit_price_to_dollars
+    end
+  end
+
   def traverse_to_item_respository
     self.merchant_repository.sales_engine.items
   end
