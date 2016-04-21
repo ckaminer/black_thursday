@@ -1,5 +1,5 @@
-require './test/test_helper'
-require './lib/average'
+require_relative 'test_helper'
+require_relative '../lib/average'
 
 class AverageTest < Minitest::Test
 

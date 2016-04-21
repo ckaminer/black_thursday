@@ -1,6 +1,6 @@
-require './lib/merchant_repository'
-require './lib/item_repository'
 require 'csv'
+require_relative 'merchant_repository'
+require_relative 'item_repository'
 
 class SalesEngine
 

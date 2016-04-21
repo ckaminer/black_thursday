@@ -1,11 +1,11 @@
 require 'csv'
-require './lib/merchant'
-require './lib/loader'
+require_relative 'merchant'
+require_relative 'loader'
 
 class MerchantRepository
   attr_reader :file_path, :merchants, :sales_engine
 
-  def initialize(file_path, sales_engine, hash = nil)
+  def initialize(file_path, sales_engine)
     @file_path = file_path
     @merchants = []
     @sales_engine = sales_engine
@@ -34,7 +34,6 @@ class MerchantRepository
   def find_by_id(id)
     @merchants.find do |merchant|
       merchant.id == id.to_s
-    # require 'pry';binding.pry
     end
   end
 
