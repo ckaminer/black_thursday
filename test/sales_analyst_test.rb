@@ -8,6 +8,7 @@ class SalesAnalystTest < Minitest::Test
     se = SalesEngine.from_csv({
                           :items     => "./data/items.csv",
                           :merchants => "./data/merchants.csv",
+                          :invoices => "./data/invoices_test.csv"
                             })
 
     sa = SalesAnalyst.new(se)
@@ -21,6 +22,7 @@ class SalesAnalystTest < Minitest::Test
     se = SalesEngine.from_csv({
                           :items     => "./data/items.csv",
                           :merchants => "./data/merchants_test.csv",
+                          :invoices => "./data/invoices_test.csv"
                             })
 
     sa = SalesAnalyst.new(se)
@@ -35,6 +37,7 @@ class SalesAnalystTest < Minitest::Test
     se = SalesEngine.from_csv({
                           :items     => "./data/items.csv",
                           :merchants => "./data/merchants_test.csv",
+                          :invoices => "./data/invoices_test.csv"
                             })
 
     sa = SalesAnalyst.new(se)
@@ -52,7 +55,8 @@ class SalesAnalystTest < Minitest::Test
     se = SalesEngine.from_csv({
                           :items     => "./data/items.csv",
                           :merchants => "./data/merchants_test.csv",
-                            })
+                          :invoices => "./data/invoices_test.csv"
+                              })
 
     sa = SalesAnalyst.new(se)
 
@@ -64,6 +68,7 @@ class SalesAnalystTest < Minitest::Test
     se = SalesEngine.from_csv({
                           :items     => "./data/items.csv",
                           :merchants => "./data/merchants_test.csv",
+                          :invoices => "./data/invoices_test.csv"
                             })
 
     sa = SalesAnalyst.new(se)
@@ -76,6 +81,7 @@ class SalesAnalystTest < Minitest::Test
     se = SalesEngine.from_csv({
                           :items     => "./data/items.csv",
                           :merchants => "./data/merchants_test.csv",
+                          :invoices => "./data/invoices_test.csv"
                             })
 
     sa = SalesAnalyst.new(se)
@@ -83,9 +89,55 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 42.99, sa.average_item_price
     assert_equal 54.00, sa.average_price_per_item_standard_deviation.round(2)
     assert items.all? do |item|
-      item.unit_price_to_dollars > (21376.62)
+      item.unit_price_to_dollars > (150.99)
     end
     assert_equal [], items
   end
 
+  def test_invoice_average_and_standard_deviation
+    se = SalesEngine.from_csv({
+                          :items     => "./data/items.csv",
+                          :merchants => "./data/merchants.csv",
+                          :invoices => "./data/invoices_test.csv"
+                              })
+    sa = SalesAnalyst.new(se)
+    result = sa.average_invoices_per_merchant
+    result2 = sa.average_invoices_per_merchant_standard_deviation
+
+    assert_equal 0.02 , result
+    assert_equal 0.14 , result2
+  end
+
+  def test_bottom_and_top_merchants_by_invoice_count
+    se = SalesEngine.from_csv({
+                          :items     => "./data/items.csv",
+                          :merchants => "./data/merchants_test.csv",
+                          :invoices => "./data/invoices_test.csv"
+                            })
+
+    sa = SalesAnalyst.new(se)
+    top_merchants = sa.top_merchants_by_invoice_count
+    bottom_merchants = sa.bottom_merchants_by_invoice_count
+    assert top_merchants.all? do |merchant|
+      merchant.invoices.count > (0.3)
+    end
+    assert  bottom_merchants.all? do |merchant|
+      merchant.invoices.count < (0.3)
+    end
+    assert_equal [], top_merchants
+    assert_equal [], bottom_merchants
+  end
+
+  def test_isolating_inovices_by_days_of_the_week
+    se = SalesEngine.from_csv({
+                          :items     => "./data/items.csv",
+                          :merchants => "./data/merchants_test.csv",
+                          :invoices => "./data/invoices_test.csv"
+                            })
+
+    sa = SalesAnalyst.new(se)
+    hash = sa.invoices_by_days_of_the_week
+    hash_average = sa.invoice_count_average_by_day
+ #require 'pry';binding.pry
+  end
 end

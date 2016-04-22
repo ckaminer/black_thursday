@@ -18,6 +18,37 @@ class SalesAnalyst
     end
   end
 
+  def invoices_by_days_of_the_week
+    day_hash = array_of_all_invoices.group_by do |invoice|
+      invoice.day_of_week
+    end
+    day_hash.map do |k, v|
+      day_hash[k] = day_hash[k].count
+    end
+    day_hash
+  end
+
+  def invoice_count_average_by_day
+    (invoices_by_days_of_the_week.values.reduce(:+).to_f/7).round(2)
+  require 'pry';binding.pry
+  end
+
+
+
+  def invoice_count_for_each_merchant
+    array_of_all_merchants.map do |merchant|
+      merchant.invoices.count
+    end
+  end
+
+  def average_invoices_per_merchant
+    Average.average_values(invoice_count_for_each_merchant)
+  end
+
+  def average_invoices_per_merchant_standard_deviation
+    StandardDeviation.standard_deviation(invoice_count_for_each_merchant).round(2)
+  end
+
   def average_items_per_merchant
     Average.average_values(item_count_for_each_merchant)
   end
@@ -57,6 +88,22 @@ class SalesAnalyst
     end
   end
 
+  def top_merchants_by_invoice_count
+    threshold = average_invoices_per_merchant +
+                (average_invoices_per_merchant_standard_deviation ** 2)
+    array_of_all_merchants.find_all do |merchant|
+      merchant.invoices.count > threshold
+    end
+  end
+
+  def bottom_merchants_by_invoice_count
+    threshold = average_invoices_per_merchant -
+                (average_invoices_per_merchant_standard_deviation ** 2)
+    array_of_all_merchants.find_all do |merchant|
+      merchant.invoices.count < threshold
+    end
+  end
+
   def item_array_for_merchants
     array_of_all_merchants.map do |merchant|
       merchant.items
@@ -86,5 +133,10 @@ class SalesAnalyst
     def array_of_all_items
       sales_engine.items.items
     end
+
+    def array_of_all_invoices
+      sales_engine.invoices.invoices
+    end
+
 
 end
