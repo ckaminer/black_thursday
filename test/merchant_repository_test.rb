@@ -45,7 +45,7 @@ class MerchantRepositoryTest < Minitest::Test
 
     result = mr.find_by_name("jejum")
 
-    assert_equal "12334141", result.id
+    assert_equal 12334141, result.id
   end
 
   def test_find_all_by_name_returns_empty_array_if_no_matches
@@ -61,7 +61,7 @@ class MerchantRepositoryTest < Minitest::Test
 
     result = mr.find_all_by_name("jejum")
 
-    assert_equal "12334141", result[0].id
+    assert_equal 12334141, result[0].id
   end
 
 end

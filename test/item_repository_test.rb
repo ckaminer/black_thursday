@@ -17,8 +17,7 @@ class ItemRepositoryTest < Minitest::Test
 
     result = ir.find_by_id("263395237")
 
-    assert_equal "263395237" , result.id
-
+    assert_equal 263395237 , result.id
   end
 
   def test_find_by_name_method_returns_item_with_that_name
@@ -42,24 +41,23 @@ class ItemRepositoryTest < Minitest::Test
 
     result = ir.find_all_by_price(1200)
 
-    assert_equal 1200, result.unit_price_to_dollars
+    assert_equal 1200, result[0].unit_price_to_dollars
   end
 
   def test_find_by_price_range_method_returns_items_in_that_price_range
     ir = ItemRepository.new(File.join(Dir.pwd,'data/items.csv'), nil)
 
-    result = ir.find_all_by_price_in_range(1199, 1201)
+    result = ir.find_all_by_price_in_range(1199..1201)
 
-    assert_equal 43, result.length
-
+    assert_equal 2, result.length
   end
 
   def test_find_by_merchant_id_returns_items_with_that_merchant_id
     ir = ItemRepository.new(File.join(Dir.pwd,'data/items.csv'), nil)
 
-    result = ir.find_all_by_merchant_id("12334141")
+    result = ir.find_all_by_merchant_id(12334141)
 
-    assert_equal "12334141", result.merchant_id
+    assert_equal 12334141, result[0].merchant_id
 
   end
 

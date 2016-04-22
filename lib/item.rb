@@ -9,18 +9,18 @@ class Item
     :merchant_id, :created_at, :updated_at, :item_repository
 
   def initialize(row, item_repository)
-    @id = row[:id]
+    @id = row[:id].to_i
     @name = row[:name]
     @description = row[:description]
-    @unit_price = row[:unit_price]
-    @merchant_id = row[:merchant_id]
-    @created_at = row[:created_at] || Time.now.strftime("%Y-%m-%d")
-    @updated_at = row[:updated_at]
+    @unit_price = BigDecimal.new(row[:unit_price], row[:unit_price].to_s.length - 1) / 100
+    @merchant_id = row[:merchant_id].to_i
+    @created_at = Time.parse(row[:created_at].to_s) || Time.new#.strftime("%Y-%m-%d")
+    @updated_at = Time.parse(row[:updated_at].to_s)
     @item_repository = item_repository
   end
 
   def unit_price_to_dollars
-    BigDecimal.new(@unit_price, 4)
+    unit_price.to_f
   end
 
   def merchant

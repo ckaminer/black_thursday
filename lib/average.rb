@@ -4,8 +4,8 @@ class Average
     if array == []
       nil
     else
-      average = array.reduce(:+).to_f/array.count
-      average.to_f.round(2)
+      average = array.reduce(:+)/array.count.to_f
+      average.round(2)
     end
   end
 

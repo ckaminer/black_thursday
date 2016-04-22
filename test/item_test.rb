@@ -21,25 +21,12 @@ class ItemTest < Minitest::Test
     i = Item.new({
   :name        => "Pencil",
   :description => "You can use it to write things",
-  :unit_price  => BigDecimal.new(10.99,4),
+  :unit_price  => 10.99,
   :created_at  => Time.now,
   :updated_at  => Time.now,
 },nil)
 
     assert_equal "You can use it to write things", i.description
-  end
-
-  def test_unit_price_method_returns_price_of_item
-    i = Item.new({
-  :name        => "Pencil",
-  :description => "You can use it to write things",
-  :unit_price  => BigDecimal.new(10.99,4),
-  :created_at  => Time.now,
-  :updated_at  => Time.now,
-  },nil)
-
-    assert_equal 10.99, i.unit_price
-
   end
 
   def test_unit_price_to_dollars_method_returns_price_in_float
@@ -51,7 +38,7 @@ class ItemTest < Minitest::Test
   :updated_at  => Time.now,
   },nil)
 
-    assert_equal 10.99, i.unit_price_to_dollars
+    assert_equal 0.1099, i.unit_price_to_dollars
 
   end
 
@@ -76,7 +63,7 @@ class ItemTest < Minitest::Test
   :updated_at  => Time.now,
   },nil)
 
-    assert_equal "2015-10-10", i.created_at
+    assert_equal Time.parse("2015-10-10"), i.created_at
   end
 
   def test_updated_at_method_returns_time_item_last_modified

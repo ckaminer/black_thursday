@@ -1,3 +1,5 @@
+require 'bigdecimal'
+require 'bigdecimal/util'
 require_relative 'sales_engine'
 require_relative 'average'
 require_relative 'standard_deviation'
@@ -16,12 +18,12 @@ class SalesAnalyst
     end
   end
 
-  def average_item_count
+  def average_items_per_merchant
     Average.average_values(item_count_for_each_merchant)
   end
 
   def average_items_per_merchant_standard_deviation
-    StandardDeviation.standard_deviation(item_count_for_each_merchant)
+    StandardDeviation.standard_deviation(item_count_for_each_merchant).round(2)
   end
 
   def merchants_with_high_item_count
@@ -34,15 +36,17 @@ class SalesAnalyst
 
   def average_item_price_for_merchant(id)
     merchant = sales_engine.merchants.find_by_id(id)
-    prices = merchant.price_of_items
-    (prices.reduce(:+) / prices.count).to_f
+    Average.average_values(merchant.price_of_items)
+  end
+
+  def array_of_average_prices
+    array_of_all_merchants.map do |merchant|
+      average_item_price_for_merchant(merchant.id)
+    end
   end
 
   def average_average_item_price_for_all_merchants
-    averages = array_of_all_merchants.map do |merchant|
-      average_item_price_for_merchant(merchant.id)
-    end
-    (averages.reduce(:+) / averages.count).to_f
+    Average.average_values(array_of_average_prices)
   end
 
   def golden_items
