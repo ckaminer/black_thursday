@@ -16,6 +16,10 @@ class Invoice
     @invoice_repository = invoice_repository
   end
 
+  def day_of_week
+    created_at.strftime("%A")
+  end 
+
   def merchant
      traverse_to_merchant_repository.merchants.find do |merchant|
       merchant.id == merchant_id
