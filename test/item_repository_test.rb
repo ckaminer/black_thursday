@@ -1,7 +1,6 @@
 require_relative 'test_helper'
 require_relative '../lib/item_repository'
 
-
 class ItemRepositoryTest < Minitest::Test
   def test_parse_data_populates_item_array
     ir = ItemRepository.new(File.join(Dir.pwd,'data/items.csv'), nil)
