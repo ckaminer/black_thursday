@@ -16,7 +16,6 @@ class ItemTest < Minitest::Test
     assert_equal "Pencil", i.name
   end
 
-
   def test_description_method_returns_description
     i = Item.new({
   :name        => "Pencil",
@@ -39,7 +38,6 @@ class ItemTest < Minitest::Test
   },nil)
 
     assert_equal 0.1099, i.unit_price_to_dollars
-
   end
 
   def test_created_at_method_defaults_to_today
@@ -56,22 +54,17 @@ class ItemTest < Minitest::Test
 
   def test_created_at_method_returns_date_provided
     i = Item.new({
-  :name        => "Pencil",
-  :description => "You can use it to write things",
-  :unit_price  => BigDecimal.new(10.99,4),
-  :created_at  => "2015-10-10",
-  :updated_at  => Time.now,
-  },nil)
+                  :name        => "Pencil",
+                  :description => "You can use it to write things",
+                  :unit_price  => BigDecimal.new(10.99,4),
+                  :created_at  => "2015-10-10",
+                  :updated_at  => Time.now,
+                  },nil)
 
     assert_equal Time.parse("2015-10-10"), i.created_at
   end
 
   def test_updated_at_method_returns_time_item_last_modified
   end
-
-  def test_return_merchant_id_method_returns_merchant_id
-  end
-
-
-
+  
 end

@@ -16,16 +16,26 @@ class Merchant
     end
   end
 
+  def invoices
+    traverse_to_invoice_repository.invoices.find_all do |invoice|
+      invoice.merchant_id == id
+    end
+  end
+
   def price_of_items
     items.map do |item|
       item.unit_price
     end
   end
 
-  def traverse_to_item_respository
-    self.merchant_repository.sales_engine.items
-  end
+  private
 
+    def traverse_to_item_respository
+      self.merchant_repository.sales_engine.items
+    end
 
+    def traverse_to_invoice_repository
+      self.merchant_repository.sales_engine.invoices
+    end
 
 end
