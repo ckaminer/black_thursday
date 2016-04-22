@@ -30,8 +30,7 @@ class ItemRepository
 
   def find_by_id(id)
     @items.find do |item|
-      item.id == id
-      #require 'pry';binding.pry
+      item.id == id.to_i
     end
   end
 
@@ -49,22 +48,19 @@ class ItemRepository
   end
 
   def find_all_by_price(price)
-    @items.find do |item|
-      item.unit_price_to_dollars == price
+    @items.find_all do |item|
+      item.unit_price_to_dollars == price.to_f
     end
   end
 
-  def find_all_by_price_in_range(low_range, high_range)
-    low = BigDecimal.new(low_range, 4)
-    high = BigDecimal.new(high_range, 4)
-    range = (low..high)
+  def find_all_by_price_in_range(range)
     @items.find_all do |item|
       range === item.unit_price_to_dollars
     end
   end
 
   def find_all_by_merchant_id(merchant_id)
-    @items.find do |item|
+    @items.find_all do |item|
       item.merchant_id == merchant_id
     end
   end

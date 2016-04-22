@@ -29,7 +29,7 @@ class SalesEngineTest < Minitest::Test
                               :items     => "./data/items.csv",
                               :merchants => "./data/merchants.csv",
                               })
-    merchant = se.merchants.find_by_id("12334141")
+    merchant = se.merchants.find_by_id(12334141)
 
     result = merchant.items
     result2 = merchant.price_of_items.map do |price|
@@ -37,8 +37,8 @@ class SalesEngineTest < Minitest::Test
               end
 
     assert_equal Item, result[0].class
-    assert_equal "263395237", result[0].id
-    assert_equal [1200], result2
+    assert_equal 263395237, result[0].id
+    assert_equal [12.00], result2
   end
 
 end
