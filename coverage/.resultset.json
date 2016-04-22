@@ -1,7 +1,11 @@
 {
   "Unit Tests": {
     "coverage": {
+<<<<<<< HEAD
       "/Users/nickpisciotta/turing/Module1/Projects/black_thursday/lib/standard_deviation.rb": [
+=======
+      "/Users/charleskaminer/Turing/1module/black_thursday/lib/standard_deviation.rb": [
+>>>>>>> master
         1,
         null,
         1,
@@ -31,7 +35,11 @@
         null,
         null
       ],
+<<<<<<< HEAD
       "/Users/nickpisciotta/turing/Module1/Projects/black_thursday/lib/average.rb": [
+=======
+      "/Users/charleskaminer/Turing/1module/black_thursday/lib/average.rb": [
+>>>>>>> master
         1,
         null,
         1,
@@ -46,6 +54,10 @@
         null
       ]
     },
+<<<<<<< HEAD
     "timestamp": 1461273147
+=======
+    "timestamp": 1461284379
+>>>>>>> master
   }
 }

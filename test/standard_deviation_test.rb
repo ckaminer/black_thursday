@@ -14,8 +14,7 @@ class StandardDeviationTest < Minitest::Test
   def test_standard_deviation
     numbers = [1,2,3,4]
     a = StandardDeviation.standard_deviation(numbers)
-
-    assert_equal 1.58, a.round(2)
+    assert_equal 1.12, a.round(2)
   end
 
 end
