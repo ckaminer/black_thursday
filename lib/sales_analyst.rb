@@ -30,10 +30,44 @@ class SalesAnalyst
 
   def invoice_count_average_by_day
     (invoices_by_days_of_the_week.values.reduce(:+).to_f/7).round(2)
-  require 'pry';binding.pry
   end
 
+  def invoice_count_by_day_sum_of_squares
+    squares = invoices_by_days_of_the_week.values.map do |count|
+      (count - invoice_count_average_by_day) ** 2
+    end
+    squares.reduce(:+)
+  end
 
+  def invoice_count_standard_deviation_by_day
+    if invoices_by_days_of_the_week.values == []
+      nil
+    else
+      Math.sqrt(invoice_count_by_day_sum_of_squares / 6)
+    end
+  end
+
+  def count_status(status)
+    array_of_all_invoices.count do |invoice|
+      invoice.status == status
+    end
+  end
+
+  def invoice_status(status)
+    total = array_of_all_invoices.count
+    (count_status(status) / total.to_f).round(2)
+  end
+
+  def top_days_by_invoice_count
+    threshold = invoice_count_average_by_day +
+                invoice_count_standard_deviation_by_day
+    days = invoices_by_days_of_the_week.find_all do |key, value|
+      invoices_by_days_of_the_week[key] > threshold
+    end
+    days.map do |array|
+      array[0]
+    end
+  end
 
   def invoice_count_for_each_merchant
     array_of_all_merchants.map do |merchant|
@@ -137,6 +171,5 @@ class SalesAnalyst
     def array_of_all_invoices
       sales_engine.invoices.invoices
     end
-
 
 end

@@ -20,7 +20,7 @@ class StandardDeviation
     else
       sd = StandardDeviation.new(array)
       sum = sd.sum_of_squares(array)
-      Math.sqrt(sum/ array.count)
+      Math.sqrt(sum/ (array.count - 1))
     end
   end
 

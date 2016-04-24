@@ -30,7 +30,7 @@ class SalesAnalystTest < Minitest::Test
     result = sa.average_items_per_merchant_standard_deviation
 
 
-    assert_equal 0.94, result.round(2)
+    assert_equal 1.15, result.round(2)
   end
 
   def test_merchants_with_high_item_count
@@ -87,7 +87,7 @@ class SalesAnalystTest < Minitest::Test
     sa = SalesAnalyst.new(se)
     items = sa.golden_items
     assert_equal 42.99, sa.average_item_price
-    assert_equal 54.00, sa.average_price_per_item_standard_deviation.round(2)
+    assert_equal 60.38, sa.average_price_per_item_standard_deviation.round(2)
     assert items.all? do |item|
       item.unit_price_to_dollars > (150.99)
     end
@@ -138,6 +138,41 @@ class SalesAnalystTest < Minitest::Test
     sa = SalesAnalyst.new(se)
     hash = sa.invoices_by_days_of_the_week
     hash_average = sa.invoice_count_average_by_day
- #require 'pry';binding.pry
+
+    assert_equal 1.29, hash_average
   end
+
+  def test_top_days_by_invoice_count
+    se = SalesEngine.from_csv({
+                          :items     => "./data/items.csv",
+                          :merchants => "./data/merchants_test.csv",
+                          :invoices => "./data/invoices_test.csv"
+                            })
+
+    sa = SalesAnalyst.new(se)
+    result = sa.top_days_by_invoice_count
+
+    assert_equal 1.29, sa.invoice_count_average_by_day
+    assert_equal 1.19, sa.invoice_count_standard_deviation_by_day.round(2)
+    assert_equal ["Friday"], result
+  end
+
+  def test_invoice_status
+    se = SalesEngine.from_csv({
+                          :items     => "./data/items.csv",
+                          :merchants => "./data/merchants_test.csv",
+                          :invoices => "./data/invoices_test.csv"
+                            })
+
+    sa = SalesAnalyst.new(se)
+    result = sa.invoice_status(:pending)
+    result3 = sa.invoice_status(:shipped)
+    result2 = sa.invoice_status(:returned)
+
+    assert_equal 0.56, result
+    assert_equal 0, result2
+    assert_equal 0.44, result3
+  end
+
+
 end
