@@ -27,6 +27,12 @@ class Merchant
       item.unit_price
     end
   end
+  #
+  # def customers
+  #   traverse_to_customer_repository.customers.find_all do |customer|
+  #
+  #   end
+  # end
 
   private
 
@@ -36,6 +42,10 @@ class Merchant
 
     def traverse_to_invoice_repository
       self.merchant_repository.sales_engine.invoices
+    end
+
+    def traverse_to_customer_repository
+      self.merchant_repository.sales_engine.customers
     end
 
 end
