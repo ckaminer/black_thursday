@@ -15,16 +15,37 @@ class Customer
     @customer_repository = customer_repository
   end
 
-  def merchants
-     traverse_to_merchant_repository.merchants.find_all do |merchant|
-      merchant.id == id
+  def matching_invoices
+    traverse_to_invoice_repository.invoices.find_all do |invoice|
+      invoice.customer_id == id
     end
+  end
+
+  def unique_merchant_ids_from_invoices
+    merchant_ids = matching_invoices.map do |invoice|
+      invoice.merchant_id
+    end
+    merchant_ids.uniq
+  end
+
+  def merchants
+    merchants = []
+    traverse_to_merchant_repository.merchants.map do |merchant|
+      if unique_merchant_ids_from_invoices.include?(merchant.id)
+        merchants << merchant
+      end
+    end
+    merchants.flatten
   end
 
   private
 
     def traverse_to_merchant_repository
       self.customer_repository.sales_engine.merchants
+    end
+
+    def traverse_to_invoice_repository
+      self.customer_repository.sales_engine.invoices
     end
 
 end

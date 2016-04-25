@@ -44,6 +44,14 @@ class Invoice
     end
   end
 
+  def is_paid_in_full?
+    #at least one matching transaction is successful
+  end
+
+  def total
+    #sum of quantity x unit price
+  end
+
   private
 
     def traverse_to_merchant_repository
