@@ -26,6 +26,7 @@ class SalesAnalyst
       day_hash[k] = day_hash[k].count
     end
     day_hash
+    #require 'pry';binding.pry 
   end
 
   def invoice_count_average_by_day
