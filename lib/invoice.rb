@@ -26,10 +26,20 @@ class Invoice
     end
   end
 
+  def items
+    traverse_to_invoice_item_respository.invoice_items.find_all do |invoice_item|
+      invoice_item.invoice_id == id
+    end
+  end
+
+
   private
 
     def traverse_to_merchant_repository
       self.invoice_repository.sales_engine.merchants
     end
 
+    def traverse_to_invoice_item_respository
+      self.invoice_repository.sales_engine.invoice_items
+    end
 end
