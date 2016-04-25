@@ -17,7 +17,7 @@ class Customer
 
   def merchants
      traverse_to_merchant_repository.merchants.find_all do |merchant|
-      customer.id == id
+      merchant.id == id
     end
   end
 

@@ -39,7 +39,7 @@ class CustomerRepository
   end
 
   def find_all_by_last_name(last_name)
-    @customers.find_all do |customers|
+    @customers.find_all do |customer|
       customer.last_name == last_name
     end
   end

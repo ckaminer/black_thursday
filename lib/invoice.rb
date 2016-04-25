@@ -26,10 +26,11 @@ class Invoice
     end
   end
 
-  # def items
-  #   traverse_to_item_repository.items.find_all do |item|
-  #     item.id == id
-  # end
+  def items
+    traverse_to_invoice_item_repository.invoice_items.find_all do |invoice_item|
+      invoice_item.invoice_id == id
+    end
+  end
 
   def transactions
     traverse_to_transaction_repository.transactions.find_all do |transaction|
@@ -40,6 +41,7 @@ class Invoice
   def customer
     traverse_to_customer_repository.customers.find do |customer|
       customer.id == customer_id.to_i
+    end
   end
 
   private
@@ -48,8 +50,8 @@ class Invoice
       self.invoice_repository.sales_engine.merchants
     end
 
-    def traverse_to_item_repository
-      self.invoice_repository.sales_engine.items
+    def traverse_to_invoice_item_repository
+      self.invoice_repository.sales_engine.invoice_items
     end
 
     def traverse_to_transaction_repository
