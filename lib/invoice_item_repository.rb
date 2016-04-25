@@ -3,7 +3,7 @@ require_relative 'invoice_item'
 require_relative 'loader'
 
 
-class InoviceItemRepository
+class InvoiceItemRepository
   attr_reader :file_path, :invoice_items, :sales_engine
 
   def initialize(file_path, sales_engine)
@@ -45,7 +45,5 @@ class InoviceItemRepository
       invoice_item.invoice_id == invoice_id
     end
   end
-
-
 
 end

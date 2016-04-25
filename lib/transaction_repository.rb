@@ -45,7 +45,7 @@ class TransactionRepository
   end
 
   def find_all_by_result(result)
-    @transaction.find_all do |transaction|
+    @transactions.find_all do |transaction|
       transaction.result == result
     end
   end
