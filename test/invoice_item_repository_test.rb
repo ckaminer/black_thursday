@@ -5,13 +5,13 @@ require_relative '../lib/invoice_item_repository'
 class InvoiceItemRepositoryTest < Minitest::Test
 
   def test_parse_data_populates_invoice_item_array
-    ir = InvoiceItemRepository.new(File.join(Dir.pwd,'data/invoice_items_test.csv'), nil)
+    ir = InvoiceItemRepository.new(File.join(Dir.pwd,'data/test_data/invoice_items_test.csv'), nil)
 
-    assert_equal 20, ir.invoice_items.length
+    assert_equal 100, ir.invoice_items.length
   end
 
   def test_find_by_id_method_returns_invoice_item
-    ir = InvoiceItemRepository.new(File.join(Dir.pwd,'data/invoice_items_test.csv'), nil)
+    ir = InvoiceItemRepository.new(File.join(Dir.pwd,'data/test_data/invoice_items_test.csv'), nil)
 
     result = ir.find_by_id(2)
 
@@ -19,7 +19,7 @@ class InvoiceItemRepositoryTest < Minitest::Test
   end
 
   def test_find_all_by_item_id_returns_invoice_item
-    ir = InvoiceItemRepository.new(File.join(Dir.pwd,'data/invoice_items_test.csv'), nil)
+    ir = InvoiceItemRepository.new(File.join(Dir.pwd,'data/test_data/invoice_items_test.csv'), nil)
 
     result = ir.find_all_by_item_id(263454779)
 
@@ -27,7 +27,7 @@ class InvoiceItemRepositoryTest < Minitest::Test
   end
 
   def test_find_all_by_invoice_id_returns_invoice_items
-    ir = InvoiceItemRepository.new(File.join(Dir.pwd,'data/invoice_items_test.csv'), nil)
+    ir = InvoiceItemRepository.new(File.join(Dir.pwd,'data/test_data/invoice_items_test.csv'), nil)
 
     result = ir.find_all_by_invoice_id(1)
 

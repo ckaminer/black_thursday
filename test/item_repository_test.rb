@@ -8,9 +8,6 @@ class ItemRepositoryTest < Minitest::Test
     assert_equal 1367, ir.items.length
   end
 
-  def test_all_method_returns_all_item_instances
-  end
-
   def test_find_by_id_method_returns_item_with_that_id
     ir = ItemRepository.new(File.join(Dir.pwd,'data/items.csv'), nil)
 

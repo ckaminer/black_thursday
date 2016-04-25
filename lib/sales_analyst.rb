@@ -26,7 +26,6 @@ class SalesAnalyst
       day_hash[k] = day_hash[k].count
     end
     day_hash
-    #require 'pry';binding.pry 
   end
 
   def invoice_count_average_by_day
@@ -50,13 +49,13 @@ class SalesAnalyst
 
   def count_status(status)
     array_of_all_invoices.count do |invoice|
-      invoice.status == status
+      invoice.status == status.to_s
     end
   end
 
   def invoice_status(status)
     total = array_of_all_invoices.count
-    (count_status(status) / total.to_f).round(2)
+    ((count_status(status) / total.to_f) * 100).round(2)
   end
 
   def top_days_by_invoice_count
@@ -106,12 +105,23 @@ class SalesAnalyst
   end
 
   def array_of_average_prices
-    array_of_all_merchants.map do |merchant|
+    averages = array_of_all_merchants.map do |merchant|
       average_item_price_for_merchant(merchant.id)
+    end
+    sanitize_nil_averages(averages)
+  end
+
+  def sanitize_nil_averages(array)
+    array.map do |average|
+      if average == nil
+        average = 0
+      else
+        average
+      end
     end
   end
 
-  def average_average_item_price_for_all_merchants
+  def average_average_price_per_merchant
     Average.average_values(array_of_average_prices)
   end
 
@@ -125,7 +135,7 @@ class SalesAnalyst
 
   def top_merchants_by_invoice_count
     threshold = average_invoices_per_merchant +
-                (average_invoices_per_merchant_standard_deviation ** 2)
+                (average_invoices_per_merchant_standard_deviation * 2)
     array_of_all_merchants.find_all do |merchant|
       merchant.invoices.count > threshold
     end
@@ -133,7 +143,7 @@ class SalesAnalyst
 
   def bottom_merchants_by_invoice_count
     threshold = average_invoices_per_merchant -
-                (average_invoices_per_merchant_standard_deviation ** 2)
+                (average_invoices_per_merchant_standard_deviation * 2)
     array_of_all_merchants.find_all do |merchant|
       merchant.invoices.count < threshold
     end

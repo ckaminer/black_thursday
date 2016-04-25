@@ -19,7 +19,7 @@ class InvoiceItemTest < Minitest::Test
     assert_equal 7, i.item_id
     assert_equal 8, i.invoice_id
     assert_equal 1, i.quantity
-    assert_equal 10.99, i.unit_price
+    assert_equal 0.1099, i.unit_price_to_dollars
     assert Time.now, i.updated_at
     assert Time.now, i.created_at
   end
