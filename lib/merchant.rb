@@ -27,12 +27,29 @@ class Merchant
       item.unit_price
     end
   end
-  #
-  # def customers
-  #   traverse_to_customer_repository.customers.find_all do |customer|
-  #
-  #   end
-  # end
+
+  def matching_invoices
+    traverse_to_invoice_repository.invoices.find_all do |invoice|
+      invoice.merchant_id == id
+    end
+  end
+
+  def unique_customer_ids_from_invoices
+    customer_ids = matching_invoices.map do |invoice|
+      invoice.customer_id
+    end
+    customer_ids.uniq
+  end
+
+  def customers
+    customers = []
+    traverse_to_customer_repository.customers.map do |customer|
+      if unique_customer_ids_from_invoices.include?(customer.id)
+        customers << customer
+      end
+    end
+    customers.flatten
+  end
 
   private
 
