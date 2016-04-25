@@ -10,7 +10,7 @@ class Invoice
     @id = row[:id].to_i
     @customer_id = row[:customer_id].to_i
     @merchant_id = row[:merchant_id].to_i
-    @status = row[:status].to_sym
+    @status = row[:status].to_s
     @created_at = Time.parse(row[:created_at].to_s) || Time.new
     @updated_at = Time.parse(row[:updated_at].to_s)
     @invoice_repository = invoice_repository
@@ -26,10 +26,20 @@ class Invoice
     end
   end
 
-  def items
-    traverse_to_invoice_item_respository.invoice_items.find_all do |invoice_item|
-      invoice_item.invoice_id == id
+  def item_ids
+    item_ids = matching_invoice_items.map do |invoice_item|
+      invoice_item.item_id
     end
+  end
+
+  def items
+    items = []
+    traverse_to_item_repository.items.map do |item|
+      if item_ids.include?(item.id)
+        items << item
+      end
+    end
+    items.flatten
   end
 
   def transactions
@@ -44,12 +54,34 @@ class Invoice
     end
   end
 
+  def matching_transactions
+    traverse_to_transaction_repository.transactions.find_all do |transaction|
+      transaction.invoice_id == id
+    end
+  end
+
   def is_paid_in_full?
-    #at least one matching transaction is successful
+    count = matching_transactions.count do |transaction|
+      transaction.result == "success"
+    end
+    if count > 0
+      true
+    else
+      false
+    end
+  end
+
+  def matching_invoice_items
+    traverse_to_invoice_item_repository.invoice_items.find_all do |invoice_item|
+      invoice_item.invoice_id == id
+    end
   end
 
   def total
-    #sum of quantity x unit price
+    charges = matching_invoice_items.map do |invoice_item|
+      invoice_item.quantity * invoice_item.unit_price
+    end
+    charges.reduce(:+)
   end
 
   private
@@ -58,7 +90,7 @@ class Invoice
       self.invoice_repository.sales_engine.merchants
     end
 
-    def traverse_to_invoice_item_respository
+    def traverse_to_invoice_item_repository
       self.invoice_repository.sales_engine.invoice_items
     end
 
@@ -70,4 +102,7 @@ class Invoice
       self.invoice_repository.sales_engine.customers
     end
 
+    def traverse_to_item_repository
+      self.invoice_repository.sales_engine.items
+    end
 end

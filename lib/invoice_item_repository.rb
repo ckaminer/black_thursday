@@ -36,7 +36,6 @@ class InvoiceItemRepository
   def find_all_by_item_id(item_id)
     @invoice_items.find_all do |invoice_item|
       invoice_item.item_id == item_id
-    #require 'pry';binding.pry
     end
   end
 
