@@ -213,7 +213,6 @@ class SalesAnalyst
         invoice_items << invoice_item
       end
     end
-    #require 'pry';binding.pry
     invoice_items
   end
 
@@ -255,36 +254,8 @@ class SalesAnalyst
       end
       end
     end
-    #require 'pry';binding.pry 
     merchants_in_order[0..(rank - 1)]
   end
-
-  # def isolate_merchants_invoices
-  #   matching_invoices = []
-  #   array_of_all_invoices.map do |invoice|
-  #     if array_of_merchant_ids.include?(invoice.merchant_id)
-  #       matching_invoices << invoice
-  #     end
-  #   end
-  #   matching_invoices
-  #   require 'pry';binding.pry
-  # end
-  #
-  # def array_of_all_invoice_ids(invoices)
-  #   invoices.map do |invoice|
-  #     invoice.id
-  #   end
-  # end
-  #
-  # def grab_matching_invoice_items(invoices)
-  #   invoice_items = []
-  #   array_of_all_invoice_items.map do |invoice_item|
-  #     if array_of_all_invoice_ids(invoices).include?(invoice_item.invoice_id)
-  #       invoice_items << invoice_item
-  #     end
-  #   end
-  #   invoice_items
-  # end
 
   private
 
