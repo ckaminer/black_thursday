@@ -260,4 +260,41 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 22496.84, result.total.to_f
   end
 
+  def test_revenue_by_date
+    se = SalesEngine.from_csv({
+                            :items     => "./data/test_data/items_test.csv",
+                            :merchants => "./data/test_data/merchants_test.csv",
+                            :invoices => "./data/test_data/invoices_test.csv",
+                            :invoice_items => "./data/test_data/invoice_items_test.csv",
+                            :transactions => "./data/test_data/transactions_test.csv",
+                            :customers => "./data/test_data/customers_test.csv"
+                          })
+
+    sa = SalesAnalyst.new(se)
+    result = sa.total_revenue_by_date("2013-04-14")
+
+    assert_equal 5289.13, result
+    assert_equal BigDecimal, result.class
+  end
+
+  def test_revenue_by_merchant
+    se = SalesEngine.from_csv({
+                            :items     => "./data/test_data/items_test.csv",
+                            :merchants => "./data/test_data/merchants_test.csv",
+                            :invoices => "./data/test_data/invoices_test.csv",
+                            :invoice_items => "./data/test_data/invoice_items_test.csv",
+                            :transactions => "./data/test_data/transactions_test.csv",
+                            :customers => "./data/test_data/customers_test.csv"
+                          })
+
+    sa = SalesAnalyst.new(se)
+    result = sa.revenue_by_merchant(12334208)
+    result2 = sa.sort_revenues
+    result3 = sa.top_revenue_earners(2)
+
+    assert_equal 2560.22, result
+    assert_equal Array, result2.class
+    assert_equal 12334264, result3[0].id 
+  end
+
 end
