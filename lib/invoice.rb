@@ -71,6 +71,14 @@ class Invoice
     end
   end
 
+  def payment_status
+    if is_paid_in_full? == false
+      "pending"
+    else
+      "paid"
+    end
+  end
+
   def matching_invoice_items
     traverse_to_invoice_item_repository.invoice_items.find_all do |invoice_item|
       invoice_item.invoice_id == id

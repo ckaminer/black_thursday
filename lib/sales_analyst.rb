@@ -201,19 +201,23 @@ class SalesAnalyst
   end
 
   def collect_invoice_items_for_merchant(merchant_id)
-    matching_invoices = []
-    array_of_all_invoices.map do |invoice|
-      if invoice.merchant_id == merchant_id
-        matching_invoices << invoice.id
-      end
-    end
     invoice_items = []
     array_of_all_invoice_items.map do |invoice_item|
-      if matching_invoices.include?(invoice_item.invoice_id)
+      if matching_invoice_ids_by_merchant(merchant_id).include?(invoice_item.invoice_id)
         invoice_items << invoice_item
       end
     end
     invoice_items
+  end
+
+  def merchants_with_pending_invoices
+    pending_merchants = []
+    array_of_all_merchants.map do |merchant|
+      if matching_invoice_status_by_merchant(merchant.id) > 0
+        pending_merchants << merchant
+      end
+    end
+    pending_merchants
   end
 
   def revenue_by_merchant(merchant_id)
@@ -245,16 +249,36 @@ class SalesAnalyst
     end.reverse
   end
 
-  def top_revenue_earners(rank)
+  def merchants_in_order
     merchants_in_order = []
     sort_revenues.map do |array|
       array_of_all_merchants.each do |merchant|
-      if merchant.id == array[1]
-        merchants_in_order << merchant
-      end
+        if merchant.id == array[1]
+          merchants_in_order << merchant
+        end
       end
     end
-    merchants_in_order[0..(rank - 1)]
+    merchants_in_order
+  end
+
+  def top_revenue_earners(rank = nil)
+    if rank == nil
+      merchants_in_order[0..19]
+    else
+      merchants_in_order[0..(rank - 1)]
+    end
+  end
+
+  def merchants_with_only_one_item
+    array_of_all_merchants.find_all do |merchant|
+      merchant.items.length == 1
+    end
+  end
+
+  def merchants_with_only_one_item_registered_in_month(month)
+    merchants_with_only_one_item.find_all do |merchant|
+      merchant.month_registered.downcase == month.downcase
+    end
   end
 
   private
@@ -273,6 +297,32 @@ class SalesAnalyst
 
     def array_of_all_invoice_items
       sales_engine.invoice_items.invoice_items
+    end
+
+    def array_of_all_transactions
+      sales_engine.transactions.transactions
+    end
+
+    def matching_invoices_by_merchant(merchant_id)
+      matching_invoices = []
+      array_of_all_invoices.map do |invoice|
+        if invoice.merchant_id == merchant_id
+          matching_invoices << invoice
+        end
+      end
+      matching_invoices
+    end
+
+    def matching_invoice_ids_by_merchant(merchant_id)
+      matching_invoices_by_merchant(merchant_id).map do |invoice|
+        invoice.id
+      end
+    end
+
+    def matching_invoice_status_by_merchant(merchant_id)
+      matching_invoices_by_merchant(merchant_id).count do |invoice|
+        invoice.payment_status == "pending"
+      end
     end
 
 end
