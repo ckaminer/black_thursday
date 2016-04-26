@@ -10,6 +10,10 @@ class Merchant
     @merchant_repository = merchant_repository
   end
 
+  def month_registered
+    Date.parse(created_at).strftime("%B")
+  end
+
   def items
     traverse_to_item_respository.items.find_all do |item|
       item.merchant_id == id
@@ -63,6 +67,10 @@ class Merchant
 
     def traverse_to_customer_repository
       self.merchant_repository.sales_engine.customers
+    end
+
+    def traverse_to_invoice_item_repository
+      self.merchant_repository.sales_engine.invoice_items
     end
 
 end
