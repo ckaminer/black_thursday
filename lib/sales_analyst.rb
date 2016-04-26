@@ -169,6 +169,123 @@ class SalesAnalyst
     StandardDeviation.standard_deviation(prices_for_each_item)
   end
 
+  def collect_invoices_by_day(day)
+    day_array = []
+    array_of_all_invoices.map do |invoice|
+      if invoice.updated_at.strftime("%Y-%m-%d") == day
+        day_array << invoice
+      end
+    end
+    day_array
+  end
+
+  def collect_matching_invoice_items(day)
+    invoice_ids = collect_invoices_by_day(day).map do |invoice|
+      invoice.id
+    end
+    array = []
+    array_of_all_invoice_items.map do |invoice_item|
+      if invoice_ids.include?(invoice_item.invoice_id)
+        array << invoice_item
+      end
+    end
+    array
+  end
+
+  def total_revenue_by_date(date)
+    revenue = []
+     collect_matching_invoice_items(date).map do |invoice_item|
+       revenue << (invoice_item.quantity * invoice_item.unit_price)
+     end
+    revenue.reduce(:+)
+  end
+
+  def collect_invoice_items_for_merchant(merchant_id)
+    matching_invoices = []
+    array_of_all_invoices.map do |invoice|
+      if invoice.merchant_id == merchant_id
+        matching_invoices << invoice.id
+      end
+    end
+    invoice_items = []
+    array_of_all_invoice_items.map do |invoice_item|
+      if matching_invoices.include?(invoice_item.invoice_id)
+        invoice_items << invoice_item
+      end
+    end
+    #require 'pry';binding.pry
+    invoice_items
+  end
+
+  def revenue_by_merchant(merchant_id)
+    total = collect_invoice_items_for_merchant(merchant_id).map do |invoice_item|
+        (invoice_item.quantity * invoice_item.unit_price)
+    end.reduce(:+)
+    if total == nil
+      total = 0
+    else
+      total
+    end
+  end
+
+  def array_of_merchant_ids
+    array_of_all_merchants.map do |merchant|
+      merchant.id
+    end
+  end
+
+  def revenues_for_all_merchants
+    array_of_merchant_ids.map do |merchant_id|
+      [revenue_by_merchant(merchant_id), merchant_id]
+    end
+  end
+
+  def sort_revenues
+    revenues_for_all_merchants.sort_by do |array|
+      array[0]
+    end.reverse
+  end
+
+  def top_revenue_earners(rank)
+    merchants_in_order = []
+    sort_revenues.map do |array|
+      array_of_all_merchants.each do |merchant|
+      if merchant.id == array[1]
+        merchants_in_order << merchant
+      end
+      end
+    end
+    #require 'pry';binding.pry 
+    merchants_in_order[0..(rank - 1)]
+  end
+
+  # def isolate_merchants_invoices
+  #   matching_invoices = []
+  #   array_of_all_invoices.map do |invoice|
+  #     if array_of_merchant_ids.include?(invoice.merchant_id)
+  #       matching_invoices << invoice
+  #     end
+  #   end
+  #   matching_invoices
+  #   require 'pry';binding.pry
+  # end
+  #
+  # def array_of_all_invoice_ids(invoices)
+  #   invoices.map do |invoice|
+  #     invoice.id
+  #   end
+  # end
+  #
+  # def grab_matching_invoice_items(invoices)
+  #   invoice_items = []
+  #   array_of_all_invoice_items.map do |invoice_item|
+  #     if array_of_all_invoice_ids(invoices).include?(invoice_item.invoice_id)
+  #       invoice_items << invoice_item
+  #     end
+  #   end
+  #   invoice_items
+  # end
+
   private
 
     def array_of_all_merchants
@@ -181,6 +298,10 @@ class SalesAnalyst
 
     def array_of_all_invoices
       sales_engine.invoices.invoices
+    end
+
+    def array_of_all_invoice_items
+      sales_engine.invoice_items.invoice_items
     end
 
 end
