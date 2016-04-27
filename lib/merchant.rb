@@ -20,9 +20,35 @@ class Merchant
     end
   end
 
+  def invoice_items_by_quantity
+    invoice_items = successful_invoices.map do |invoice|
+      invoice.matching_invoice_items
+    end.flatten
+    quantity_hash = invoice_items.group_by do |invoice_item|
+      invoice_item.quantity
+    end
+    quantity_hash[quantity_hash.keys.max]
+  end
+
+  def top_invoice_item_by_revenue
+    invoice_items = successful_invoices.map do |invoice|
+      invoice.matching_invoice_items
+    end.flatten
+    invoice_items.sort_by do |invoice_item|
+      (invoice_item.unit_price * invoice_item.quantity)
+    end.reverse[0].item
+    # require 'pry'; binding.pry
+  end
+
   def invoices
     traverse_to_invoice_repository.invoices.find_all do |invoice|
       invoice.merchant_id == id
+    end
+  end
+
+  def successful_invoices
+    invoices.find_all do |invoice|
+      invoice.is_paid_in_full?
     end
   end
 
@@ -32,14 +58,8 @@ class Merchant
     end
   end
 
-  def matching_invoices
-    traverse_to_invoice_repository.invoices.find_all do |invoice|
-      invoice.merchant_id == id
-    end
-  end
-
   def unique_customer_ids_from_invoices
-    customer_ids = matching_invoices.map do |invoice|
+    customer_ids = invoices.map do |invoice|
       invoice.customer_id
     end
     customer_ids.uniq
@@ -67,10 +87,6 @@ class Merchant
 
     def traverse_to_customer_repository
       self.merchant_repository.sales_engine.customers
-    end
-
-    def traverse_to_invoice_item_repository
-      self.merchant_repository.sales_engine.invoice_items
     end
 
 end

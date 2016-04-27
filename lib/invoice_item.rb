@@ -22,4 +22,16 @@ class InvoiceItem
     unit_price.to_f
   end
 
+  def item
+    traverse_to_item_repository.items.find do |item|
+      item.id == item_id
+    end
+  end
+
+  private
+
+    def traverse_to_item_repository
+      self.invoice_item_repository.sales_engine.items
+    end
+
 end

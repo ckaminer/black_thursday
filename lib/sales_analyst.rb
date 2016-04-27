@@ -170,65 +170,30 @@ class SalesAnalyst
   end
 
   def collect_invoices_by_day(day)
-    day_array = []
-    array_of_all_invoices.map do |invoice|
-      if invoice.updated_at.strftime("%Y-%m-%d") == day
-        day_array << invoice
-      end
+    array_of_all_successful_invoices.find_all do |invoice|
+      invoice.created_at.strftime("%Y-%m-%d") == day
     end
-    day_array
-  end
-
-  def collect_matching_invoice_items(day)
-    invoice_ids = collect_invoices_by_day(day).map do |invoice|
-      invoice.id
-    end
-    array = []
-    array_of_all_invoice_items.map do |invoice_item|
-      if invoice_ids.include?(invoice_item.invoice_id)
-        array << invoice_item
-      end
-    end
-    array
   end
 
   def total_revenue_by_date(date)
-    revenue = []
-     collect_matching_invoice_items(date).map do |invoice_item|
-       revenue << (invoice_item.quantity * invoice_item.unit_price)
-     end
-    revenue.reduce(:+)
-  end
-
-  def collect_invoice_items_for_merchant(merchant_id)
-    invoice_items = []
-    array_of_all_invoice_items.map do |invoice_item|
-      if matching_invoice_ids_by_merchant(merchant_id).include?(invoice_item.invoice_id)
-        invoice_items << invoice_item
-      end
-    end
-    invoice_items
+    collect_invoices_by_day(date).map do |invoice|
+      invoice.total
+    end.reduce(:+)
   end
 
   def merchants_with_pending_invoices
-    pending_merchants = []
-    array_of_all_merchants.map do |merchant|
-      if matching_invoice_status_by_merchant(merchant.id) > 0
-        pending_merchants << merchant
-      end
+    array_of_all_merchants.find_all do |merchant|
+      matching_invoice_status_by_merchant(merchant.id) > 0
     end
-    pending_merchants
   end
 
   def revenue_by_merchant(merchant_id)
-    total = collect_invoice_items_for_merchant(merchant_id).map do |invoice_item|
-        (invoice_item.quantity * invoice_item.unit_price)
-    end.reduce(:+)
-    if total == nil
-      total = 0
-    else
-      total
+    merchant = array_of_all_merchants.find do |merchant|
+              merchant.id == merchant_id
     end
+    merchant.successful_invoices.map do |invoice|
+      invoice.total
+    end.reduce(:+)
   end
 
   def array_of_merchant_ids
@@ -281,6 +246,18 @@ class SalesAnalyst
     end
   end
 
+  def most_sold_item_for_merchant(merchant_id)
+    array_of_all_merchants.find do |merchant|
+      merchant.id == merchant_id
+    end.invoice_items_by_quantity.map(&:item)
+  end
+
+  def best_item_for_merchant(merchant_id)
+    array_of_all_merchants.find do |merchant|
+      merchant.id == merchant_id
+    end.top_invoice_item_by_revenue
+  end
+
   private
 
     def array_of_all_merchants
@@ -293,6 +270,12 @@ class SalesAnalyst
 
     def array_of_all_invoices
       sales_engine.invoices.invoices
+    end
+
+    def array_of_all_successful_invoices
+      array_of_all_invoices.find_all do |invoice|
+        invoice.is_paid_in_full?
+      end
     end
 
     def array_of_all_invoice_items

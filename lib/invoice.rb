@@ -86,10 +86,14 @@ class Invoice
   end
 
   def total
-    charges = matching_invoice_items.map do |invoice_item|
-      invoice_item.quantity * invoice_item.unit_price
+    if is_paid_in_full?
+      charges = matching_invoice_items.map do |invoice_item|
+        invoice_item.quantity * invoice_item.unit_price
+      end
+      charges.reduce(:+)
+    else
+      0
     end
-    charges.reduce(:+)
   end
 
   private
