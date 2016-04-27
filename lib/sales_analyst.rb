@@ -188,12 +188,18 @@ class SalesAnalyst
   end
 
   def revenue_by_merchant(merchant_id)
-    merchant = array_of_all_merchants.find do |merchant|
-              merchant.id == merchant_id
+    merchant = self.sales_engine.merchants.find_by_id(merchant_id)
+    if merchant.successful_invoices == []
+      0
+    else
+      merchant.successful_invoices.map do |invoice|
+        if invoice.total == nil
+          0
+        else
+          invoice.total
+        end
+      end.reduce(:+)
     end
-    merchant.successful_invoices.map do |invoice|
-      invoice.total
-    end.reduce(:+)
   end
 
   def array_of_merchant_ids
@@ -210,20 +216,16 @@ class SalesAnalyst
 
   def sort_revenues
     revenues_for_all_merchants.sort_by do |array|
-      array[0]
+      array[0].to_f
     end.reverse
   end
 
   def merchants_in_order
-    merchants_in_order = []
-    sort_revenues.map do |array|
-      array_of_all_merchants.each do |merchant|
-        if merchant.id == array[1]
-          merchants_in_order << merchant
-        end
+    array_of_all_merchants.find_all do |merchant|
+      sort_revenues.each do |array|
+        array[1] == merchant.id
       end
     end
-    merchants_in_order
   end
 
   def top_revenue_earners(rank = nil)

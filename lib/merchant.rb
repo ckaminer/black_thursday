@@ -37,7 +37,6 @@ class Merchant
     invoice_items.sort_by do |invoice_item|
       (invoice_item.unit_price * invoice_item.quantity)
     end.reverse[0].item
-    # require 'pry'; binding.pry
   end
 
   def invoices
