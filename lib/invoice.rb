@@ -10,7 +10,7 @@ class Invoice
     @id = row[:id].to_i
     @customer_id = row[:customer_id].to_i
     @merchant_id = row[:merchant_id].to_i
-    @status = row[:status].to_s
+    @status = row[:status].to_sym
     @created_at = Time.parse(row[:created_at].to_s) || Time.new
     @updated_at = Time.parse(row[:updated_at].to_s)
     @invoice_repository = invoice_repository
