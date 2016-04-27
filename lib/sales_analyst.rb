@@ -49,7 +49,7 @@ class SalesAnalyst
 
   def count_status(status)
     array_of_all_invoices.count do |invoice|
-      invoice.status == status.to_s
+      invoice.status == status
     end
   end
 
@@ -80,7 +80,8 @@ class SalesAnalyst
   end
 
   def average_invoices_per_merchant_standard_deviation
-    StandardDeviation.standard_deviation(invoice_count_for_each_merchant).round(2)
+    invoice_counts = invoice_count_for_each_merchant
+    StandardDeviation.standard_deviation(invoice_counts).round(2)
   end
 
   def average_items_per_merchant
@@ -171,7 +172,7 @@ class SalesAnalyst
 
   def collect_invoices_by_day(day)
     array_of_all_successful_invoices.find_all do |invoice|
-      invoice.created_at.strftime("%Y-%m-%d") == day
+      invoice.created_at.strftime("%Y-%m-%d") == day.strftime("%Y-%m-%d")
     end
   end
 
@@ -220,19 +221,19 @@ class SalesAnalyst
     end.reverse
   end
 
-  def merchants_in_order
-    array_of_all_merchants.find_all do |merchant|
-      sort_revenues.each do |array|
-        array[1] == merchant.id
+  def merchants_ranked_by_revenue
+    sort_revenues.map do |revenue|
+      array_of_all_merchants.find do |merchant|
+        merchant.id == revenue[1]
       end
     end
   end
 
   def top_revenue_earners(rank = nil)
     if rank == nil
-      merchants_in_order[0..19]
+      merchants_ranked_by_revenue[0..19]
     else
-      merchants_in_order[0..(rank - 1)]
+      merchants_ranked_by_revenue[0..(rank - 1)]
     end
   end
 
@@ -249,9 +250,8 @@ class SalesAnalyst
   end
 
   def most_sold_item_for_merchant(merchant_id)
-    array_of_all_merchants.find do |merchant|
-      merchant.id == merchant_id
-    end.invoice_items_by_quantity.map(&:item)
+    merchant = self.sales_engine.merchants.find_by_id(merchant_id)
+    merchant.invoice_items_by_quantity.map(&:item)
   end
 
   def best_item_for_merchant(merchant_id)
