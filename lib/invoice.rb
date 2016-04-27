@@ -87,6 +87,7 @@ class Invoice
 
   def total
     if is_paid_in_full?
+      #require 'pry';binding.pry
       charges = matching_invoice_items.map do |invoice_item|
         invoice_item.quantity * invoice_item.unit_price
       end
