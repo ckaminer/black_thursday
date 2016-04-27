@@ -6,7 +6,7 @@ class TransactionRepositoryTest < Minitest::Test
   def test_parse_data_populates_transaction_array
     tr = TransactionRepository.new(File.join(Dir.pwd, "data/test_data/transactions_test.csv"), nil)
 
-    assert_equal 100, tr.transactions.length
+    assert_equal 88, tr.transactions.length
   end
 
   def test_all_returns_array_of_all_merchant_instances
@@ -29,7 +29,7 @@ class TransactionRepositoryTest < Minitest::Test
 
     result = tr.find_by_id(3)
 
-    assert_equal 750, result.invoice_id
+    assert_equal 2, result.invoice_id
   end
 
   def test_find_by_invoice_id_returns_empty_array_if_no_match
@@ -43,9 +43,9 @@ class TransactionRepositoryTest < Minitest::Test
   def test_find_by_credit_card_number
     tr = TransactionRepository.new(File.join(Dir.pwd, "data/test_data/transactions_test.csv"), nil)
 
-    result = tr.find_all_by_credit_card_number(4048033451067370)
+    result = tr.find_all_by_credit_card_number(0000000000000000)
 
-    assert_equal 4, result[0].id
+    assert_equal 2, result[0].id
   end
 
   def test_find_all_by_result_returns_array_of_matches
@@ -53,7 +53,7 @@ class TransactionRepositoryTest < Minitest::Test
 
     result = tr.find_all_by_result("success")
 
-    assert_equal 77, result.length
+    assert_equal 58, result.length
   end
 
 end
