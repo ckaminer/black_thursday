@@ -23,7 +23,7 @@ class Item
   end
 
   def merchant
-     traverse_to_merchant_repository.merchants.find do |merchant|
+    traverse_to_merchant_repository.merchants.find do |merchant|
       merchant.id == merchant_id
     end
   end
