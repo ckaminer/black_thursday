@@ -1,7 +1,9 @@
 require 'bigdecimal'
 require 'bigdecimal/util'
+require_relative 'traverse'
 
 class Transaction
+  include Traverse
 
   attr_reader :id, :invoice_id, :credit_card_number,
               :credit_card_expiration_date, :result,
@@ -19,15 +21,9 @@ class Transaction
   end
 
   def invoice
-     traverse_to_invoice_repository.invoices.find do |invoice|
+     self.transaction_repository.to_invoices.invoices.find do |invoice|
       invoice.id == invoice_id
     end
   end
-
-  private
-
-    def traverse_to_invoice_repository
-      self.transaction_repository.sales_engine.invoices
-    end
 
 end

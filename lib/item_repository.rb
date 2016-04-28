@@ -3,8 +3,11 @@ require 'bigdecimal'
 require 'bigdecimal/util'
 require_relative 'item'
 require_relative 'loader'
+require_relative 'traverse'
 
 class ItemRepository
+  include Traverse
+
   attr_reader :items, :file_path, :sales_engine
 
   def initialize(file_path, sales_engine)
@@ -14,9 +17,6 @@ class ItemRepository
     parse_data_by_row
   end
 
-  def inspect
-    "#<#{self.class} #{@items.size} rows>"
-  end
 
   def parse_data_by_row
     Loader.open_file(@file_path).each do |row|
@@ -64,5 +64,10 @@ class ItemRepository
       item.merchant_id == merchant_id
     end
   end
+
+  private
+    def inspect
+      "#<#{self.class} #{@items.size} rows>"
+    end
 
 end

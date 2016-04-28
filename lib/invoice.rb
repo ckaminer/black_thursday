@@ -1,7 +1,9 @@
 require 'bigdecimal'
 require 'bigdecimal/util'
+require_relative 'traverse'
 
 class Invoice
+  include Traverse
 
   attr_reader :id, :customer_id, :merchant_id, :status,
     :created_at, :updated_at, :invoice_repository
@@ -21,7 +23,7 @@ class Invoice
   end
 
   def merchant
-     traverse_to_merchant_repository.merchants.find do |merchant|
+     self.invoice_repository.to_merchants.merchants.find do |merchant|
       merchant.id == merchant_id
     end
   end
@@ -33,35 +35,26 @@ class Invoice
   end
 
   def items
-    items = []
-    traverse_to_item_repository.items.map do |item|
-      if item_ids.include?(item.id)
-        items << item
-      end
-    end
-    items.flatten
+    self.invoice_repository.to_items.items.find_all do |item|
+      item_ids.include?(item.id)
+    end.flatten
   end
 
   def transactions
-    traverse_to_transaction_repository.transactions.find_all do |transaction|
+    transaction_repo = self.invoice_repository.to_transactions
+    transaction_repo.transactions.find_all do |transaction|
       transaction.invoice_id == id.to_i
     end
   end
 
   def customer
-    traverse_to_customer_repository.customers.find do |customer|
+    self.invoice_repository.to_customers.customers.find do |customer|
       customer.id == customer_id.to_i
     end
   end
 
-  def matching_transactions
-    traverse_to_transaction_repository.transactions.find_all do |transaction|
-      transaction.invoice_id == id
-    end
-  end
-
   def is_paid_in_full?
-    count = matching_transactions.count do |transaction|
+    count = transactions.count do |transaction|
       transaction.result == "success"
     end
     if count > 0
@@ -80,14 +73,14 @@ class Invoice
   end
 
   def matching_invoice_items
-    traverse_to_invoice_item_repository.invoice_items.find_all do |invoice_item|
+    invoice_item_repo = self.invoice_repository.to_invoice_items
+    invoice_item_repo.invoice_items.find_all do |invoice_item|
       invoice_item.invoice_id == id
     end
   end
 
   def total
     if is_paid_in_full?
-      #require 'pry';binding.pry
       charges = matching_invoice_items.map do |invoice_item|
         invoice_item.quantity * invoice_item.unit_price
       end
@@ -97,25 +90,4 @@ class Invoice
     end
   end
 
-  private
-
-    def traverse_to_merchant_repository
-      self.invoice_repository.sales_engine.merchants
-    end
-
-    def traverse_to_invoice_item_repository
-      self.invoice_repository.sales_engine.invoice_items
-    end
-
-    def traverse_to_transaction_repository
-      self.invoice_repository.sales_engine.transactions
-    end
-
-    def traverse_to_customer_repository
-      self.invoice_repository.sales_engine.customers
-    end
-
-    def traverse_to_item_repository
-      self.invoice_repository.sales_engine.items
-    end
 end

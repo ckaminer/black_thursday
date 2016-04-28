@@ -3,8 +3,11 @@ require 'bigdecimal'
 require 'bigdecimal/util'
 require_relative 'invoice'
 require_relative 'loader'
+require_relative 'traverse'
 
 class InvoiceRepository
+  include Traverse
+
   attr_reader :invoices, :file_path, :sales_engine
 
   def initialize(file_path, sales_engine)
@@ -14,9 +17,6 @@ class InvoiceRepository
     parse_data_by_row
   end
 
-  def inspect
-    "#<#{self.class} #{@invoices.size} rows>"
-  end
 
   def parse_data_by_row
     Loader.open_file(@file_path).each do |row|
@@ -51,5 +51,11 @@ class InvoiceRepository
       invoice.status == status
     end
   end
+
+  private
+
+    def inspect
+      "#<#{self.class} #{@invoices.size} rows>"
+    end
 
 end

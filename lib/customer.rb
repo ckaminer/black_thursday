@@ -1,7 +1,9 @@
 require 'bigdecimal'
 require 'bigdecimal/util'
+require_relative "traverse"
 
 class Customer
+  include Traverse
 
   attr_reader :id, :first_name, :last_name,
               :created_at, :updated_at, :customer_repository
@@ -16,7 +18,7 @@ class Customer
   end
 
   def matching_invoices
-    traverse_to_invoice_repository.invoices.find_all do |invoice|
+    self.customer_repository.to_invoices.invoices.find_all do |invoice|
       invoice.customer_id == id
     end
   end
@@ -29,23 +31,9 @@ class Customer
   end
 
   def merchants
-    merchants = []
-    traverse_to_merchant_repository.merchants.map do |merchant|
-      if unique_merchant_ids_from_invoices.include?(merchant.id)
-        merchants << merchant
-      end
-    end
-    merchants.flatten
+    self.customer_repository.to_merchants.merchants.find_all do |merchant|
+      unique_merchant_ids_from_invoices.include?(merchant.id)
+    end.flatten
   end
-
-  private
-
-    def traverse_to_merchant_repository
-      self.customer_repository.sales_engine.merchants
-    end
-
-    def traverse_to_invoice_repository
-      self.customer_repository.sales_engine.invoices
-    end
 
 end

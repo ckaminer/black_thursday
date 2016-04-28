@@ -1,8 +1,11 @@
 require 'csv'
 require_relative 'transaction'
 require_relative 'loader'
+require_relative 'traverse'
 
 class TransactionRepository
+  include Traverse
+
   attr_reader :transactions, :file_path, :sales_engine
 
   def initialize(file_path, sales_engine)
@@ -10,10 +13,6 @@ class TransactionRepository
     @transactions = []
     @sales_engine = sales_engine
     parse_data_by_row
-  end
-
-  def inspect
-    "#<#{self.class} #{@transactions.size} rows>"
   end
 
   def parse_data_by_row
@@ -49,5 +48,10 @@ class TransactionRepository
       transaction.result == result
     end
   end
+
+  private
+    def inspect
+      "#<#{self.class} #{@transactions.size} rows>"
+    end
 
 end
