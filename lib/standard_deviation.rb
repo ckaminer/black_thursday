@@ -24,5 +24,4 @@ class StandardDeviation
     end
   end
 
-
 end

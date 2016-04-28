@@ -1,9 +1,11 @@
 require 'csv'
 require_relative 'invoice_item'
 require_relative 'loader'
-
+require_relative 'traverse'
 
 class InvoiceItemRepository
+  include Traverse
+
   attr_reader :file_path, :invoice_items, :sales_engine
 
   def initialize(file_path, sales_engine)
@@ -13,9 +15,6 @@ class InvoiceItemRepository
     parse_data_by_row
   end
 
-  def inspect
-    "#<#{self.class} #{@invoice_items.size} rows>"
-  end
 
   def parse_data_by_row
     Loader.open_file(@file_path).each do |row|
@@ -44,5 +43,11 @@ class InvoiceItemRepository
       invoice_item.invoice_id == invoice_id
     end
   end
+
+  private
+
+    def inspect
+      "#<#{self.class} #{@invoice_items.size} rows>"
+    end
 
 end
