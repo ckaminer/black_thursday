@@ -1,7 +1,9 @@
 require 'bigdecimal'
 require 'bigdecimal/util'
+require_relative 'traverse'
 
 class InvoiceItem
+  include Traverse
 
   attr_reader :id, :item_id, :invoice_id, :quantity,
               :created_at, :updated_at,
@@ -27,15 +29,9 @@ class InvoiceItem
   end
 
   def item
-    traverse_to_item_repository.items.find do |item|
+    self.invoice_item_repository.to_items.items.find do |item|
       item.id == item_id
     end
   end
-
-  private
-
-    def traverse_to_item_repository
-      self.invoice_item_repository.sales_engine.items
-    end
 
 end

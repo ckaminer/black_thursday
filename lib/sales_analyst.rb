@@ -5,7 +5,7 @@ require_relative 'average'
 require_relative 'standard_deviation'
 
 class SalesAnalyst
-
+  DAYS_IN_WEEK = 7
   attr_reader :sales_engine
 
   def initialize(sales_engine)
@@ -29,21 +29,18 @@ class SalesAnalyst
   end
 
   def invoice_count_average_by_day
-    (invoices_by_days_of_the_week.values.reduce(:+).to_f/7).round(2)
+    (invoices_by_days_of_the_week.values.reduce(:+).to_f/DAYS_IN_WEEK).round(2)
   end
 
   def invoice_count_by_day_sum_of_squares
-    squares = invoices_by_days_of_the_week.values.map do |count|
+    invoices_by_days_of_the_week.values.map do |count|
       (count - invoice_count_average_by_day) ** 2
-    end
-    squares.reduce(:+)
+    end.reduce(:+)
   end
 
   def invoice_count_standard_deviation_by_day
-    if invoices_by_days_of_the_week.values == []
-      nil
-    else
-      Math.sqrt(invoice_count_by_day_sum_of_squares / 6)
+    unless invoices_by_days_of_the_week.values.empty?
+      Math.sqrt(invoice_count_by_day_sum_of_squares / (DAYS_IN_WEEK - 1))
     end
   end
 
@@ -61,12 +58,9 @@ class SalesAnalyst
   def top_days_by_invoice_count
     threshold = invoice_count_average_by_day +
                 invoice_count_standard_deviation_by_day
-    days = invoices_by_days_of_the_week.find_all do |key, value|
-      invoices_by_days_of_the_week[key] > threshold
-    end
-    days.map do |array|
-      array[0]
-    end
+    invoices_by_days_of_the_week.map do |day, _count|
+      day if invoices_by_days_of_the_week[day] > threshold
+    end.compact
   end
 
   def invoice_count_for_each_merchant
@@ -109,16 +103,13 @@ class SalesAnalyst
     averages = array_of_all_merchants.map do |merchant|
       average_item_price_for_merchant(merchant.id)
     end
+    #try compact
     sanitize_nil_averages(averages)
   end
 
   def sanitize_nil_averages(array)
     array.map do |average|
-      if average == nil
-        average = 0
-      else
-        average
-      end
+      average.nil? ? average = 0 : average
     end
   end
 
@@ -129,7 +120,7 @@ class SalesAnalyst
   def golden_items
     threshold = average_item_price +
                 (average_price_per_item_standard_deviation * 2)
-    item_array_for_merchants.flatten.find_all do |item|
+    array_of_all_items.flatten.find_all do |item|
       item.unit_price_to_dollars > threshold
     end
   end
@@ -150,14 +141,8 @@ class SalesAnalyst
     end
   end
 
-  def item_array_for_merchants
-    array_of_all_merchants.map do |merchant|
-      merchant.items
-    end
-  end
-
   def prices_for_each_item
-    price_array = item_array_for_merchants.flatten.map do |item|
+    array_of_all_items.flatten.map do |item|
       item.unit_price_to_dollars
     end
   end
@@ -184,7 +169,7 @@ class SalesAnalyst
 
   def merchants_with_pending_invoices
     array_of_all_merchants.find_all do |merchant|
-      matching_invoice_status_by_merchant(merchant.id) > 0
+      merchant.count_pending > 0
     end
   end
 
@@ -286,28 +271,6 @@ class SalesAnalyst
 
     def array_of_all_transactions
       sales_engine.transactions.transactions
-    end
-
-    def matching_invoices_by_merchant(merchant_id)
-      matching_invoices = []
-      array_of_all_invoices.map do |invoice|
-        if invoice.merchant_id == merchant_id
-          matching_invoices << invoice
-        end
-      end
-      matching_invoices
-    end
-
-    def matching_invoice_ids_by_merchant(merchant_id)
-      matching_invoices_by_merchant(merchant_id).map do |invoice|
-        invoice.id
-      end
-    end
-
-    def matching_invoice_status_by_merchant(merchant_id)
-      matching_invoices_by_merchant(merchant_id).count do |invoice|
-        invoice.payment_status == "pending"
-      end
     end
 
 end

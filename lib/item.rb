@@ -1,8 +1,10 @@
 require 'bigdecimal'
 require 'bigdecimal/util'
 require_relative 'merchant_repository'
+require_relative 'traverse'
 
 class Item
+  include Traverse
 
   attr_reader :id, :name, :description, :merchant_id,
               :created_at, :updated_at, :item_repository
@@ -27,15 +29,9 @@ class Item
   end
 
   def merchant
-    traverse_to_merchant_repository.merchants.find do |merchant|
+    self.item_repository.to_merchants.merchants.find do |merchant|
       merchant.id == merchant_id
     end
   end
-
-  private
-
-    def traverse_to_merchant_repository
-      self.item_repository.sales_engine.merchants
-    end
 
 end

@@ -1,8 +1,11 @@
 require 'csv'
 require_relative 'customer'
 require_relative 'loader'
+require_relative 'traverse'
 
 class CustomerRepository
+  include Traverse
+
   attr_reader :customers, :file_path, :sales_engine
 
   def initialize(file_path, sales_engine)
@@ -10,10 +13,6 @@ class CustomerRepository
     @customers = []
     @sales_engine = sales_engine
     parse_data_by_row
-  end
-
-  def inspect
-    "#<#{self.class} #{@customers.size} rows>"
   end
 
   def parse_data_by_row
@@ -43,5 +42,11 @@ class CustomerRepository
       customer.last_name.downcase.include?(last_name.downcase)
     end
   end
+
+  private
+
+    def inspect
+      "#<#{self.class} #{@customers.size} rows>"
+    end
 
 end

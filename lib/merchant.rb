@@ -1,4 +1,7 @@
+require_relative 'traverse'
+
 class Merchant
+  include Traverse
 
   attr_reader :id, :name, :created_at, :updated_at, :merchant_repository
 
@@ -15,7 +18,7 @@ class Merchant
   end
 
   def items
-    traverse_to_item_respository.items.find_all do |item|
+    self.merchant_repository.to_items.items.find_all do |item|
       item.merchant_id == id
     end
   end
@@ -40,7 +43,7 @@ class Merchant
   end
 
   def invoices
-    traverse_to_invoice_repository.invoices.find_all do |invoice|
+    self.merchant_repository.to_invoices.invoices.find_all do |invoice|
       invoice.merchant_id == id
     end
   end
@@ -65,27 +68,15 @@ class Merchant
   end
 
   def customers
-    customers = []
-    traverse_to_customer_repository.customers.map do |customer|
-      if unique_customer_ids_from_invoices.include?(customer.id)
-        customers << customer
-      end
-    end
-    customers.flatten
+    self.merchant_repository.to_customers.customers.find_all do |customer|
+      unique_customer_ids_from_invoices.include?(customer.id)
+    end.flatten
   end
 
-  private
-
-    def traverse_to_item_respository
-      self.merchant_repository.sales_engine.items
+  def count_pending
+    invoices.count do |invoice|
+      invoice.payment_status == "pending"
     end
-
-    def traverse_to_invoice_repository
-      self.merchant_repository.sales_engine.invoices
-    end
-
-    def traverse_to_customer_repository
-      self.merchant_repository.sales_engine.customers
-    end
+  end
 
 end
